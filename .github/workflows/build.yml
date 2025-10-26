@@ -1,4 +1,4 @@
-name: Build Electron App
+﻿name: Build Electron App
 
 on:
   push:
@@ -8,46 +8,46 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: Clean install dependencies
         run: |
-          Remove-Item -Path node_modules -Recurse -Force -ErrorAction SilentlyContinue
-          npm install
-          
+          if (Test-Path node_modules) { Remove-Item -Path node_modules -Recurse -Force }
+          npm ci
+
       - name: Build web app
         run: npm run build
-        
+
       - name: Copy dist to Electron resources
         run: |
-          Remove-Item -Path electron-erp-app/resources/dist -Recurse -Force -ErrorAction SilentlyContinue
+          if (Test-Path electron-erp-app/resources/dist) { Remove-Item -Path electron-erp-app/resources/dist -Recurse -Force }
           Copy-Item -Path dist -Destination electron-erp-app/resources/ -Recurse
-        
+
       - name: Install Electron dependencies
         working-directory: electron-erp-app
         run: |
-          Remove-Item -Path node_modules -Recurse -Force -ErrorAction SilentlyContinue
-          npm install
-        
+          if (Test-Path node_modules) { Remove-Item -Path node_modules -Recurse -Force }
+          npm ci
+
       - name: Build Electron app
         working-directory: electron-erp-app
         run: npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: electron-installers
           path: electron-erp-app/dist/*.exe
-          
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
