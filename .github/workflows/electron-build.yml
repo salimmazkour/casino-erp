@@ -1,0 +1,41 @@
+name: Build Electron Application
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install web app dependencies
+        run: npm install
+
+      - name: Build web application
+        run: npm run build
+
+      - name: Copy dist to Electron resources
+        run: |
+          mkdir -p electron-erp-app/resources
+          cp -r dist electron-erp-app/resources/
+        shell: bash
+
+      - name: Install Electron app dependencies
+        working-directory: ./electron-erp-app
+        run: npm install
+
+      - name: Build Electron application
+        working-directory: ./electron-erp-app
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run build
