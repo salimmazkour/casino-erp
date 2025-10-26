@@ -1,6 +1,6 @@
 {
   "name": "casino-erp",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "ERP Casino/Restaurant - Application Desktop Auto-Synchronisée",
   "main": "main.js",
   "scripts": {
