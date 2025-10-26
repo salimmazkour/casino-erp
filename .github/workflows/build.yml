@@ -1,4 +1,4 @@
-﻿name: Build Electron App
+name: Build Electron App
 
 on:
   push:
@@ -17,38 +17,38 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Clean install dependencies
+      - name: Clean install
         run: |
           if (Test-Path node_modules) { Remove-Item -Path node_modules -Recurse -Force }
           npm ci
 
-      - name: Build web app
+      - name: Build web
         run: npm run build
 
-      - name: Copy dist to Electron resources
+      - name: Copy to Electron
         run: |
           if (Test-Path electron-erp-app/resources/dist) { Remove-Item -Path electron-erp-app/resources/dist -Recurse -Force }
           Copy-Item -Path dist -Destination electron-erp-app/resources/ -Recurse
 
-      - name: Install Electron dependencies
+      - name: Install Electron deps
         working-directory: electron-erp-app
         run: |
           if (Test-Path node_modules) { Remove-Item -Path node_modules -Recurse -Force }
           npm ci
 
-      - name: Build Electron app
+      - name: Build Electron
         working-directory: electron-erp-app
         run: npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload artifacts
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: electron-installers
           path: electron-erp-app/dist/*.exe
 
-      - name: Create Release
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: electron-erp-app/dist/*.exe
