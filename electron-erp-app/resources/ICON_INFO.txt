@@ -1,0 +1,24 @@
+Pour ajouter une icône personnalisée :
+
+1. Créer ou télécharger une icône :
+   - icon.png (512x512px recommandé)
+   - icon.ico (avec plusieurs tailles intégrées)
+
+2. Placer les fichiers ici :
+   - resources/icon.png
+   - resources/icon.ico
+
+3. L'icône sera utilisée pour :
+   - La fenêtre de l'application
+   - Le system tray (barre des tâches)
+   - L'installeur Windows
+   - Les raccourcis
+
+Suggestion : Utiliser une icône représentant un casino (🎰, 🎲, ♠️)
+
+Outils pour créer des icônes :
+- https://www.icoconverter.com/
+- GIMP (gratuit)
+- Photoshop
+
+En l'absence d'icône, Electron utilisera son icône par défaut.

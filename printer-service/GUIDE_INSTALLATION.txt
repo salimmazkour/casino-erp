@@ -1,0 +1,106 @@
+═══════════════════════════════════════════════════════════════
+  GUIDE D'INSTALLATION - SERVICE D'IMPRESSION AUTOMATIQUE
+  ERP Printer Service
+═══════════════════════════════════════════════════════════════
+
+📋 PRÉREQUIS
+--------------
+✓ Node.js 16 ou supérieur installé
+✓ Windows 7 ou supérieur
+✓ Droits administrateur sur le PC
+
+
+🚀 INSTALLATION SUR UN PC
+--------------------------
+
+1. Copiez le dossier "printer-service" sur le PC
+
+2. Clic-droit sur "INSTALLER-SERVICE.bat"
+
+3. Choisissez "Exécuter en tant qu'administrateur"
+
+4. Patientez pendant l'installation (1-2 minutes)
+
+5. C'est terminé ! Le service démarre automatiquement
+
+
+✅ VÉRIFICATION
+----------------
+• Le service "ERP-PrinterService" est visible dans services.msc
+• Le service démarre automatiquement avec Windows
+• Accessible sur http://localhost:3001
+• Testez avec: http://localhost:3001/api/health
+
+
+🔧 GESTION DU SERVICE
+----------------------
+
+DÉMARRER LE SERVICE:
+  Windows + R → services.msc
+  → Cherchez "ERP-PrinterService"
+  → Clic-droit → Démarrer
+
+ARRÊTER LE SERVICE:
+  Windows + R → services.msc
+  → Cherchez "ERP-PrinterService"
+  → Clic-droit → Arrêter
+
+DÉSINSTALLER:
+  Clic-droit sur "DESINSTALLER-SERVICE.bat"
+  → Exécuter en tant qu'administrateur
+
+
+📦 DÉPLOIEMENT SUR 20 MACHINES
+--------------------------------
+
+Option 1 - Installation manuelle:
+  • Copiez le dossier printer-service sur chaque PC
+  • Exécutez INSTALLER-SERVICE.bat en admin sur chaque PC
+
+Option 2 - Installation via clé USB:
+  • Mettez printer-service sur une clé USB
+  • Sur chaque PC:
+    1. Copiez le dossier sur C:\ERP\printer-service
+    2. Exécutez INSTALLER-SERVICE.bat en admin
+
+Option 3 - Installation réseau (recommandé):
+  • Partagez le dossier sur un lecteur réseau
+  • Créez un script de déploiement batch
+  • Exécutez sur toutes les machines via GPO ou script
+
+
+🐛 DÉPANNAGE
+-------------
+
+Le service ne s'installe pas:
+  → Vérifiez que vous êtes administrateur
+  → Vérifiez que Node.js est installé (node --version)
+  → Réexécutez "npm install" manuellement
+
+Le service ne démarre pas:
+  → Ouvrez services.msc
+  → ERP-PrinterService → Propriétés → Onglet "Connexion"
+  → Vérifiez les droits
+
+Port 3001 déjà utilisé:
+  → Modifiez le PORT dans server.js
+  → Réinstallez le service
+
+Aucune imprimante détectée:
+  → Vérifiez que les imprimantes sont installées dans Windows
+  → Redémarrez le service
+  → Vérifiez les logs dans l'Observateur d'événements Windows
+
+
+📞 SUPPORT
+-----------
+En cas de problème, vérifiez les logs Windows:
+  Windows + R → eventvwr.msc
+  → Journaux Windows → Application
+  → Cherchez "ERP-PrinterService"
+
+
+═══════════════════════════════════════════════════════════════
+Version: 1.0.0
+Dernière mise à jour: 2025-10-23
+═══════════════════════════════════════════════════════════════

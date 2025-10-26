@@ -1,0 +1,50 @@
+{
+  "name": "casino-erp",
+  "version": "1.0.1",
+  "description": "ERP Casino/Restaurant - Application Desktop Auto-Synchronisée",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win --x64"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron-store": "^8.1.0",
+    "axios": "^1.6.0",
+    "extract-zip": "^2.0.1",
+    "electron-updater": "^6.1.7"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.casino.erp",
+    "productName": "CasinoERP",
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "update.html",
+      "package.json",
+      "resources/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "salimmazkour",
+      "repo": "casino-erp"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+electron-erp-app/node_modules/
+electron-erp-app/dist/
+*.exe
+*.tar.gz
+*.zip
+*.sql
+dist.zip
+backup_*.tar.gz
+backup_*.sql
+printer-service-windows.tar.gz
+casino-erp-*.tar.gz
+ERP-Complet.tar.gz

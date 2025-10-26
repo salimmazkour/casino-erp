@@ -1,0 +1,34 @@
+=======================================================
+BACKUP AVANT CREATION APP ELECTRON
+Date: $(date)
+=======================================================
+
+✅ Fichiers sauvegardés : backup_avant_electron_20251025_171815.tar.gz (227K)
+
+📦 CONTENU DU PROJET :
+- Application React (POS complet)
+- printer-service/ (Service d'impression Node.js)
+- print-router-service/ (Service routeur d'impression)
+- Base de données Supabase (46 tables)
+- 3 Edge Functions Supabase
+
+🗄️ TABLES BASE DE DONNEES (46) :
+✓ Gestion utilisateurs : employees, roles, permissions, employee_permissions
+✓ Gestion produits : products, product_categories, product_types, product_prices
+✓ Gestion stocks : product_stocks, stock_movements, storage_locations
+✓ Gestion achats : suppliers, purchase_orders, purchase_receptions
+✓ Gestion ventes : sales_points, orders, payments, clients
+✓ Gestion tables : restaurant_tables, rooms, room_types
+✓ Gestion impression : printers, print_templates, printer_definitions
+✓ Gestion cuisine : kitchen_orders, kitchen_tickets
+✓ Logs système : user_action_logs, void_logs, inventories
+
+🔧 SERVICES ACTIFS :
+- printer-service : Service d'impression Windows (port 3001)
+- print-router-service : Routeur d'impression (port 3002)
+- Supabase Edge Functions : auth-login, manage-employee, printer-proxy
+
+📝 PROCHAINE ETAPE :
+Création app Electron avec auto-update pour synchronisation multi-PC
+
+=======================================================
