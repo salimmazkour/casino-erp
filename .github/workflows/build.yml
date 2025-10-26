@@ -1,0 +1,53 @@
+name: Build Electron App
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies (root)
+        run: |
+          npm ci --force
+          
+      - name: Build web app
+        run: npm run build
+        
+      - name: Copy dist to Electron resources
+        run: |
+          Remove-Item -Path electron-erp-app/resources/dist -Recurse -Force -ErrorAction SilentlyContinue
+          Copy-Item -Path dist -Destination electron-erp-app/resources/ -Recurse
+        
+      - name: Install Electron dependencies
+        working-directory: electron-erp-app
+        run: npm ci --force
+        
+      - name: Build Electron app
+        working-directory: electron-erp-app
+        run: npm run build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-installers
+          path: electron-erp-app/dist/*.exe
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: electron-erp-app/dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
