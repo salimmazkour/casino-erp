@@ -17,9 +17,10 @@ jobs:
         with:
           node-version: '20'
       
-      - name: Install dependencies (root)
+      - name: Clean install dependencies
         run: |
-          npm ci --force
+          Remove-Item -Path node_modules -Recurse -Force -ErrorAction SilentlyContinue
+          npm install
           
       - name: Build web app
         run: npm run build
@@ -31,7 +32,9 @@ jobs:
         
       - name: Install Electron dependencies
         working-directory: electron-erp-app
-        run: npm ci --force
+        run: |
+          Remove-Item -Path node_modules -Recurse -Force -ErrorAction SilentlyContinue
+          npm install
         
       - name: Build Electron app
         working-directory: electron-erp-app
