@@ -78,12 +78,20 @@ function createMainWindow() {
     show: false
   });
 
-  const indexPath = path.join(APP_DIR, 'dist', 'index.html');
+  // Priorité 1 : Fichiers locaux inclus dans l'installateur
+  const bundledIndexPath = path.join(__dirname, 'resources', 'dist', 'index.html');
+  // Priorité 2 : Fichiers téléchargés depuis les mises à jour
+  const updatedIndexPath = path.join(APP_DIR, 'dist', 'index.html');
 
-  if (fs.existsSync(indexPath)) {
-    mainWindow.loadFile(indexPath);
+  if (fs.existsSync(bundledIndexPath)) {
+    console.log('Chargement depuis les ressources embarquées');
+    mainWindow.loadFile(bundledIndexPath);
+  } else if (fs.existsSync(updatedIndexPath)) {
+    console.log('Chargement depuis les fichiers mis à jour');
+    mainWindow.loadFile(updatedIndexPath);
   } else {
-    mainWindow.loadURL(`${UPDATE_URL}/index.html`);
+    console.error('ERREUR: Aucun fichier index.html trouvé !');
+    mainWindow.loadURL(`data:text/html,<h1>Erreur</h1><p>Les fichiers de l'application sont introuvables.</p>`);
   }
 
   mainWindow.once('ready-to-show', () => {
@@ -95,8 +103,10 @@ function createMainWindow() {
   });
 
   mainWindow.webContents.on('did-fail-load', () => {
-    if (fs.existsSync(indexPath)) {
-      mainWindow.loadFile(indexPath);
+    if (fs.existsSync(bundledIndexPath)) {
+      mainWindow.loadFile(bundledIndexPath);
+    } else if (fs.existsSync(updatedIndexPath)) {
+      mainWindow.loadFile(updatedIndexPath);
     }
   });
 }

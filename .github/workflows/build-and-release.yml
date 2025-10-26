@@ -1,4 +1,4 @@
-﻿name: Build and Release
+﻿name: Build and Release Electron App
 
 on:
   push:
@@ -9,14 +9,17 @@ jobs:
   build:
     runs-on: windows-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Install root dependencies
         run: npm ci
@@ -24,27 +27,18 @@ jobs:
       - name: Build web application
         run: npm run build
 
+      - name: Copy dist to Electron app
+        run: |
+          if not exist "electron-erp-app\resources\dist" mkdir "electron-erp-app\resources\dist"
+          xcopy /E /I /Y "dist\*" "electron-erp-app\resources\dist\"
+        shell: cmd
+
       - name: Install Electron dependencies
-        working-directory: electron-erp-app
+        working-directory: ./electron-erp-app
         run: npm ci
 
       - name: Build Electron application
-        working-directory: electron-erp-app
+        working-directory: ./electron-erp-app
         run: npm run build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create dist.zip
-        run: |
-          Compress-Archive -Path dist/* -DestinationPath dist.zip
-        shell: pwsh
-
-      - name: Upload Release Assets
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            electron-erp-app/dist/*.exe
-            electron-erp-app/dist/latest.yml
-            dist.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
